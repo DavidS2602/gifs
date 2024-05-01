@@ -10,9 +10,19 @@ export class GifsService {
     return [...this._tagsHistory]
   }
 
+  private organizeHistory(tag: string) {
+    tag = tag.toLowerCase()
+    if (this._tagsHistory.includes(tag)) {
+      this._tagsHistory = this._tagsHistory.filter(t => t !== tag)
+    }
+    this._tagsHistory.unshift(tag) // Add tag to the beginning of the array
+    this._tagsHistory = this._tagsHistory.splice(0, 10) // Keep only the last 10 tags
+  }
+
+
   searchTag(tag: string): void {
-    this._tagsHistory.unshift(tag)
-    this._tagsHistory = this._tagsHistory.splice(0, 10)
+    if (tag.length === 0) return
+    this.organizeHistory(tag)
     console.log(this._tagsHistory)
   }
 }
