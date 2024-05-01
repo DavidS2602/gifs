@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, type ElementRef, ViewChild } from '@angular/core';
+// biome-ignore lint/style/useImportType: <explanation>
+import  { GifsService } from '../../../services/gifs.service';
 
 @Component({
     selector: 'gifs-search-box',
@@ -23,8 +25,11 @@ export class SearchBoxComponent {
   @ViewChild('txtTagInput')
   tagInput!: ElementRef<HTMLInputElement>
 
+  constructor(private gifsService: GifsService) {}
+
   searchTag() {
     const newTag = this.tagInput.nativeElement.value
-    console.log(newTag)
+    this.gifsService.searchTag(newTag)
+    this.tagInput.nativeElement.value = ''
   }
 }
