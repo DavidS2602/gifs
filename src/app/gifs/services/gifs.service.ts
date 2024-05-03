@@ -1,11 +1,14 @@
 // biome-ignore lint/style/useImportType: <explanation>
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import type { Gif, SearchResponse } from '../interfaces/gifs.interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GifsService {
+  public gifList: Gif[] = []
+
   private serviceUrl = 'https://api.giphy.com/v1/gifs'
   private apiKey = '4UseQUMqwyDu07Pmh7hZTn5uKmK4srUR'
 
@@ -35,9 +38,9 @@ export class GifsService {
       .set('q', tag)
       .set('limit', '10');
 
-    this.http.get(`${this.serviceUrl}/search?`,{params}) // Use the params object in the request
+    this.http.get<SearchResponse>(`${this.serviceUrl}/search?`,{params}) // Use the params object in the request
       .subscribe((response) => {
-        console.log(response);
+        this.gifList = response.data;
       });
   }
 }
